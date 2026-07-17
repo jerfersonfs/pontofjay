@@ -6,3 +6,5 @@ database/*.db
 !database/.gitkeep
 
 .vscode/
+
+src/config.py

@@ -41,7 +41,8 @@ def criar_tabela():
             
             classificacao TEXT,
             
-            categoria TEXT
+            link_afiliado TEXT,
+            link_afiliado_longo TEXT
         )
     """)
 
@@ -71,9 +72,10 @@ def salvar_produto(produto):
             data_importacao,
             score,
             classificacao,
-            categoria
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)
+            link_afiliado,
+            link_afiliado_longo
+         )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)
     """, (
         produto["id"],
         produto["titulo"],
@@ -93,8 +95,39 @@ def salvar_produto(produto):
         datetime.now().isoformat(),
         produto["score"],
         produto["classificacao"],
-        produto["categoria"]
+        produto["link_afiliado"],
+        produto["link_afiliado_longo"]
+        #produto["categoria"]
     ))
 
     conn.commit()
     conn.close()
+    
+def atualizar_status(id_produto, novo_status):
+
+        conn = conectar()
+
+        conn.execute("""
+            UPDATE produtos
+            SET status = ?
+            WHERE id = ?
+        """, (novo_status, id_produto))
+
+        conn.commit()
+        conn.close()
+    
+def buscar_por_status(status):
+
+    conn = conectar()
+
+    cursor = conn.execute("""
+        SELECT *
+        FROM produtos
+        WHERE status = ?
+    """, (status,))
+
+    resultados = cursor.fetchall()
+
+    conn.close()
+
+    return resultados
