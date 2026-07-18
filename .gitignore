@@ -8,3 +8,4 @@ database/*.db
 .vscode/
 
 src/config.py
+downloads

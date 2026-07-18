@@ -1,6 +1,5 @@
 import requests
 
-
 def buscar_produtos():
     url = "https://www.mercadolivre.com.br/affiliate-program/api/hub/search?is_affiliate=true&device=desktop"
 
@@ -37,5 +36,4 @@ def buscar_produtos():
     )
 
     print(f"Status: {response.status_code}")
-
     return response.json()
