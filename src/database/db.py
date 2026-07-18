@@ -131,3 +131,20 @@ def buscar_por_status(status):
     conn.close()
 
     return resultados
+
+def produto_existe(id_produto):
+
+    conn = conectar()
+
+    cursor = conn.execute("""
+        SELECT 1
+        FROM produtos
+        WHERE id = ?
+        LIMIT 1
+    """, (id_produto,))
+
+    existe = cursor.fetchone() is not None
+
+    conn.close()
+
+    return existe

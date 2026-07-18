@@ -1,5 +1,5 @@
 import requests
-from src.config import (AFILIADO_TAG,CSRF_TOKEN,COOKIE)
+from config import (AFILIADO_TAG,CSRF_TOKEN,COOKIE)
 
 
 def gerar_link_afiliado(url_produto):
