@@ -44,7 +44,14 @@ def extrair_produto(produto_api):
 
         elif componente["type"] == "chip":
 
-            comissao = componente["chip"]["label"]["text"]
+            texto = componente["chip"]["label"]["text"]
+
+            if "%" in texto:
+
+                numeros = "".join(c for c in texto if c.isdigit())
+
+                if numeros:
+                    comissao = f"{numeros}%"
 
         elif componente["type"] == "review_compacted":
 

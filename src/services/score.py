@@ -3,7 +3,10 @@ def calcular_score(produto):
     score = 0
 
     # Comissão
-    comissao = int(produto["comissao"].replace("%", ""))
+    try:
+        comissao = int(produto["comissao"].replace("%", ""))
+    except:
+        comissao = 0
 
     if comissao >= 30:
         score += 5

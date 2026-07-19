@@ -20,16 +20,21 @@ def gerar_link_afiliado(url_produto):
         "X-Csrf-Token": CSRF_TOKEN,
         "Cookie": COOKIE
     }
+    
+    try:    
 
-    response = requests.post(
-        url,
-        json=payload,
-        headers=headers
-    )
-
-    print("Status:", response.status_code)
-    dados = response.json()
-
+        response = requests.post(
+            url,
+            json=payload,
+            headers=headers
+        )
+        response.raise_for_status()
+        dados = response.json()
+        
+    except requests.exceptions.RequestException as erro:
+        print(f"Erro ao gerar link de afiliado: {erro}")
+        return None
+    
     return {
         "link_curto": dados["short_url"],
         "link_longo": dados["long_url"]

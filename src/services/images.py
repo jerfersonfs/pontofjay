@@ -12,12 +12,11 @@ def montar_url_imagem(imagem_id, template):
     )
 
 def baixar_imagem(url, imagem_id):
-    print("URL:")
-    print(repr(url))
+    try:
 
-    resposta = requests.get(url)
+        resposta = requests.get(url)
 
-    if resposta.status_code == 200:
+        resposta.raise_for_status()
 
         caminho = f"downloads/imagens/{imagem_id}.webp"
 
@@ -25,5 +24,8 @@ def baixar_imagem(url, imagem_id):
             arquivo.write(resposta.content)
 
         return caminho
-
-    return None
+    
+    except requests.exceptions.RequestException as erro:
+        
+        print(f"Erro ao baixar imagem {imagem_id}: {erro}")
+        return None

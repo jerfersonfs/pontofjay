@@ -6,12 +6,13 @@ from database.db import (criar_tabela, salvar_produto, produto_existe)
 from services.extrator import extrair_produto
 from services.score import calcular_score, classificar_score
 from services.images import baixar_imagem, montar_url_imagem
+from services.search import obter_payload_busca
 
 
 def processar_produto(produto_api, template):
-
+    
     produto = extrair_produto(produto_api)
-    produto = extrair_produto(produto_api)
+    print(produto)
 
     if produto_existe(produto["id"]):
         print(f"Produto já existe: {produto['titulo']}")
@@ -45,7 +46,9 @@ def executar_pipeline():
 
     criar_tabela()
 
-    dados = buscar_produtos()
+    payload = obter_payload_busca()
+
+    dados = buscar_produtos(payload)
 
     template = dados["polycard_client_model"]["polycard_context"]["picture_template"]
 

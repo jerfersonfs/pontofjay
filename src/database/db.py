@@ -50,58 +50,62 @@ def criar_tabela():
     conn.close()
     
 def salvar_produto(produto):
+    
+    try:
+        conn = conectar()
+        conn.execute("""
+            INSERT OR REPLACE INTO produtos (
+                id,
+                titulo,
+                preco,
+                preco_anterior,
+                desconto,
+                comissao,
+                avaliacao,
+                qtd_vendidos,
+                product_id,
+                user_product_id,
+                tipo_produto,
+                extra_commission,
+                imagem_id,
+                url_original,
+                status,
+                data_importacao,
+                score,
+                classificacao,
+                link_afiliado,
+                link_afiliado_longo
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)
+        """, (
+            produto["id"],
+            produto["titulo"],
+            produto["preco"],
+            produto["preco_anterior"],
+            produto["desconto"],
+            produto["comissao"],
+            produto["avaliacao"],
+            produto["qtd_vendidos"],
+            produto["product_id"],
+            produto["user_product_id"],
+            produto["tipo_produto"],
+            produto["extra_commission"],
+            produto["imagem_id"],
+            produto["url_original"],
+            produto["status"],
+            datetime.now().isoformat(),
+            produto["score"],
+            produto["classificacao"],
+            produto["link_afiliado"],
+            produto["link_afiliado_longo"]
+            #produto["categoria"]
+        ))
 
-    conn = conectar()
-    conn.execute("""
-        INSERT OR REPLACE INTO produtos (
-            id,
-            titulo,
-            preco,
-            preco_anterior,
-            desconto,
-            comissao,
-            avaliacao,
-            qtd_vendidos,
-            product_id,
-            user_product_id,
-            tipo_produto,
-            extra_commission,
-            imagem_id,
-            url_original,
-            status,
-            data_importacao,
-            score,
-            classificacao,
-            link_afiliado,
-            link_afiliado_longo
-         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)
-    """, (
-        produto["id"],
-        produto["titulo"],
-        produto["preco"],
-        produto["preco_anterior"],
-        produto["desconto"],
-        produto["comissao"],
-        produto["avaliacao"],
-        produto["qtd_vendidos"],
-        produto["product_id"],
-        produto["user_product_id"],
-        produto["tipo_produto"],
-        produto["extra_commission"],
-        produto["imagem_id"],
-        produto["url_original"],
-        produto["status"],
-        datetime.now().isoformat(),
-        produto["score"],
-        produto["classificacao"],
-        produto["link_afiliado"],
-        produto["link_afiliado_longo"]
-        #produto["categoria"]
-    ))
-
-    conn.commit()
-    conn.close()
+        conn.commit()
+    except Exception as erro:
+        print(f"Erro ao salvar produto no database:{erro}")
+    finally:
+        conn.close()
     
 def atualizar_status(id_produto, novo_status):
 
