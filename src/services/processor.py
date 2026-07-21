@@ -12,7 +12,6 @@ from services.search import obter_payload_busca
 def processar_produto(produto_api, template):
     
     produto = extrair_produto(produto_api)
-    print(produto)
 
     if produto_existe(produto["id"]):
         print(f"Produto já existe: {produto['titulo']}")
