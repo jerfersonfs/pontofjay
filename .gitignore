@@ -11,3 +11,4 @@ src/config.py
 downloads
 desktop.ini
 docs
+test_queue.py

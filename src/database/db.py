@@ -7,6 +7,8 @@ def conectar():
 def criar_tabela():
 
     conn = conectar()
+    cursor = conn.cursor()
+    
     conn.execute("""
         CREATE TABLE IF NOT EXISTS produtos (
 
@@ -43,6 +45,21 @@ def criar_tabela():
             
             link_afiliado TEXT,
             link_afiliado_longo TEXT
+        )
+    """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS product_queue (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_id TEXT NOT NULL,
+            queue TEXT NOT NULL,
+            status TEXT DEFAULT 'PENDENTE',
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+            UNIQUE(product_id, queue),
+
+            FOREIGN KEY (product_id)
+                REFERENCES produtos(id)
         )
     """)
 
@@ -152,3 +169,21 @@ def produto_existe(id_produto):
     conn.close()
 
     return existe
+
+def adicionar_a_fila(product_id, queue):
+
+    conn = conectar()
+
+    try:
+        conn.execute("""
+            INSERT OR IGNORE INTO product_queue (
+                product_id,
+                queue
+            )
+            VALUES (?, ?)
+        """, (product_id, queue))
+
+        conn.commit()
+
+    finally:
+        conn.close()

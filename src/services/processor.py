@@ -4,8 +4,7 @@ from database.db import (criar_tabela, salvar_produto)
 from services.extrator import extrair_produto
 from services.score import calcular_score, classificar_score
 from services.images import baixar_imagem, montar_url_imagem
-from services.search import obter_payload_busca
-from services.search import selecionar_produtos
+from services.search import obter_payload_busca ,selecionar_produtos,destinar_produtos
  
 def processar_produto(produto, template):
 
@@ -57,3 +56,5 @@ def executar_pipeline():
             processar_produto(produto, template)
         except Exception as erro:
             print(f"Erro ao processar produto: {erro}")
+    
+    destinar_produtos(selecionados)

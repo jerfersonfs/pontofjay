@@ -1,3 +1,5 @@
+from database.db import adicionar_a_fila
+
 # Main function for interact with user
 def obter_payload_busca():
 
@@ -75,3 +77,46 @@ def selecionar_produtos(produtos):
             selecionados.append(produtos[indice])
 
     return selecionados
+
+# Function to add products in the queue
+def destinar_produtos(produtos_selecionados):
+
+    filas_disponiveis = {
+        "1": "instagram",
+        "2": "tiktok",
+        "3": "whatsapp",
+        "4": "telegram"
+    }
+
+    print("\n=== DESTINO DOS PRODUTOS ===")
+    print("1 - Instagram")
+    print("2 - TikTok")
+    print("3 - WhatsApp")
+    print("4 - Telegram")
+
+    escolha = input(
+        "\nDigite os números das filas desejadas (ex: 1,2,4): "
+    )
+
+    filas_escolhidas = []
+
+    for numero in escolha.split(","):
+        numero = numero.strip()
+
+        if numero in filas_disponiveis:
+            filas_escolhidas.append(filas_disponiveis[numero])
+
+    if not filas_escolhidas:
+        print("Nenhuma fila válida foi selecionada.")
+        return
+
+    for produto in produtos_selecionados:
+
+        for fila in filas_escolhidas:
+
+            adicionar_a_fila(
+                produto["id"],
+                fila
+            )
+
+    print("\nProdutos destinados com sucesso!")
