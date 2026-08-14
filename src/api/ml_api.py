@@ -43,3 +43,31 @@ def buscar_produtos(payload=None):
         print(f"Erro ao buscar produtos: {erro}")
         return None        
         
+def buscar_ofertas(params=None):
+    url = "https://www.mercadolivre.com.br/ofertas"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    }
+
+    try:
+        response = requests.get(
+            url=url,
+            headers=headers,
+            params=params
+        )
+
+        print("\nURL acessada:")
+        print(response.url)
+
+        print("Status:", response.status_code)
+        print("Tamanho da resposta:", len(response.text))
+
+        response.raise_for_status()
+
+        return response.text
+
+    except requests.exceptions.RequestException as erro:
+        print(f"Erro ao buscar ofertas: {erro}")
+        return None  

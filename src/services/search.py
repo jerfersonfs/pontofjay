@@ -120,3 +120,21 @@ def destinar_produtos(produtos_selecionados):
             )
 
     print("\nProdutos destinados com sucesso!")
+
+def obter_payload_ofertas():
+    print("\n========================")
+    print("TIPO DE OFERTA")
+    print("========================")
+
+    print("1 - Todas as ofertas")
+    print("2 - Ofertas relâmpago")
+
+    opcao = input("\nEscolha: ")
+
+    if opcao == "2":
+        return {
+            "container_id": "MLB779362-1",
+            "promotion_type": "lightning"
+        }
+
+    return {}

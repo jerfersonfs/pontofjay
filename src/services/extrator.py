@@ -1,3 +1,5 @@
+from bs4 import BeautifulSoup
+
 def extrair_produto(produto_api):
 
     metadata = produto_api["metadata"]
@@ -91,3 +93,25 @@ def extrair_produto(produto_api):
         "status": "NOVO"
         
     }
+
+def extrair_produtos_ofertas(html):
+    soup = BeautifulSoup(html, "html.parser")
+
+    cards = soup.select(".poly-card")
+
+    produtos = []
+
+    for card in cards:
+        titulo = card.select_one(".poly-component__title")
+        imagem = card.select_one(".poly-component__picture")
+        preco = card.select_one(".poly-component__price")
+
+        produto = {
+            "titulo": titulo.get_text(strip=True) if titulo else None,
+            "imagem": imagem.get("src") if imagem else None,
+            "preco_html": preco.get_text(" ", strip=True) if preco else None
+        }
+
+        produtos.append(produto)
+
+    return produtos
