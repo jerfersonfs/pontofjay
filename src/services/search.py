@@ -1,5 +1,6 @@
 from database.db import adicionar_a_fila
 
+
 # Main function for interact with user
 def obter_payload_busca():
 
@@ -16,15 +17,11 @@ def obter_payload_busca():
 
     pesquisa = input("\nDigite o produto que deseja pesquisar: ").strip()
     filtros = obter_filtros()
-    
-    return {
-        "search": pesquisa,
-        "sort": "relevance",
-        "filters": filtros,
-        "offset": 0
-    }
 
-# Function to catch filters for searchers    
+    return {"search": pesquisa, "sort": "relevance", "filters": filtros, "offset": 0}
+
+
+# Function to catch filters for searchers
 def obter_filtros():
     filtros = []
 
@@ -33,18 +30,12 @@ def obter_filtros():
     resposta = input("Deseja apenas produtos com comissão extra? (s/n): ")
 
     if resposta.lower() == "s":
-        filtros.append({
-            "id": "extra_commission",
-            "value": True
-        })
+        filtros.append({"id": "extra_commission", "value": True})
 
     resposta = input("Deseja apenas produtos mais vendidos? (s/n): ")
 
     if resposta.lower() == "s":
-        filtros.append({
-            "id": "best_seller",
-            "value": True
-        })
+        filtros.append({"id": "best_seller", "value": True})
 
     return filtros
 
@@ -78,6 +69,7 @@ def selecionar_produtos(produtos):
 
     return selecionados
 
+
 # Function to add products in the queue
 def destinar_produtos(produtos_selecionados):
 
@@ -85,7 +77,7 @@ def destinar_produtos(produtos_selecionados):
         "1": "instagram",
         "2": "tiktok",
         "3": "whatsapp",
-        "4": "telegram"
+        "4": "telegram",
     }
 
     print("\n=== DESTINO DOS PRODUTOS ===")
@@ -94,9 +86,7 @@ def destinar_produtos(produtos_selecionados):
     print("3 - WhatsApp")
     print("4 - Telegram")
 
-    escolha = input(
-        "\nDigite os números das filas desejadas (ex: 1,2,4): "
-    )
+    escolha = input("\nDigite os números das filas desejadas (ex: 1,2,4): ")
 
     filas_escolhidas = []
 
@@ -114,12 +104,10 @@ def destinar_produtos(produtos_selecionados):
 
         for fila in filas_escolhidas:
 
-            adicionar_a_fila(
-                produto["id"],
-                fila
-            )
+            adicionar_a_fila(produto["id"], fila)
 
     print("\nProdutos destinados com sucesso!")
+
 
 def obter_payload_ofertas():
     print("\n========================")
@@ -132,9 +120,6 @@ def obter_payload_ofertas():
     opcao = input("\nEscolha: ")
 
     if opcao == "2":
-        return {
-            "container_id": "MLB779362-1",
-            "promotion_type": "lightning"
-        }
+        return {"container_id": "MLB779362-1", "promotion_type": "lightning"}
 
     return {}

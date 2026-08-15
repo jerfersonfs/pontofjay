@@ -1,15 +1,16 @@
 import requests
 
+
 def montar_url_imagem(imagem_id, template):
 
     return (
-        template
-        .replace("{square}", "Q")
+        template.replace("{square}", "Q")
         .replace("{2x}", "")
         .replace("{id}", imagem_id)
         .replace("{size}", "AB")
         .replace("{sanitized_title}", "")
     )
+
 
 def baixar_imagem(url, imagem_id):
     try:
@@ -24,8 +25,8 @@ def baixar_imagem(url, imagem_id):
             arquivo.write(resposta.content)
 
         return caminho
-    
+
     except requests.exceptions.RequestException as erro:
-        
+
         print(f"Erro ao baixar imagem {imagem_id}: {erro}")
         return None

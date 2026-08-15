@@ -1,14 +1,16 @@
 import sqlite3
 from datetime import datetime
 
+
 def conectar():
     return sqlite3.connect("database/produtos.db")
+
 
 def criar_tabela():
 
     conn = conectar()
     cursor = conn.cursor()
-    
+
     conn.execute("""
         CREATE TABLE IF NOT EXISTS produtos (
 
@@ -47,7 +49,7 @@ def criar_tabela():
             link_afiliado_longo TEXT
         )
     """)
-    
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS product_queue (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,12 +67,14 @@ def criar_tabela():
 
     conn.commit()
     conn.close()
-    
+
+
 def salvar_produto(produto):
-    
+
     try:
         conn = conectar()
-        conn.execute("""
+        conn.execute(
+            """
             INSERT OR REPLACE INTO produtos (
                 id,
                 titulo,
@@ -94,58 +98,68 @@ def salvar_produto(produto):
                 link_afiliado_longo
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)
-        """, (
-            produto["id"],
-            produto["titulo"],
-            produto["preco"],
-            produto["preco_anterior"],
-            produto["desconto"],
-            produto["comissao"],
-            produto["avaliacao"],
-            produto["qtd_vendidos"],
-            produto["product_id"],
-            produto["user_product_id"],
-            produto["tipo_produto"],
-            produto["extra_commission"],
-            produto["imagem_id"],
-            produto["url_original"],
-            produto["status"],
-            datetime.now().isoformat(),
-            produto["score"],
-            produto["classificacao"],
-            produto["link_afiliado"],
-            produto["link_afiliado_longo"]
-            #produto["categoria"]
-        ))
+        """,
+            (
+                produto["id"],
+                produto["titulo"],
+                produto["preco"],
+                produto["preco_anterior"],
+                produto["desconto"],
+                produto["comissao"],
+                produto["avaliacao"],
+                produto["qtd_vendidos"],
+                produto["product_id"],
+                produto["user_product_id"],
+                produto["tipo_produto"],
+                produto["extra_commission"],
+                produto["imagem_id"],
+                produto["url_original"],
+                produto["status"],
+                datetime.now().isoformat(),
+                produto["score"],
+                produto["classificacao"],
+                produto["link_afiliado"],
+                produto["link_afiliado_longo"],
+                # produto["categoria"]
+            ),
+        )
 
         conn.commit()
     except Exception as erro:
         print(f"Erro ao salvar produto no database:{erro}")
     finally:
         conn.close()
-    
+
+
 def atualizar_status(id_produto, novo_status):
 
-        conn = conectar()
+    conn = conectar()
 
-        conn.execute("""
+    conn.execute(
+        """
             UPDATE produtos
             SET status = ?
             WHERE id = ?
-        """, (novo_status, id_produto))
+        """,
+        (novo_status, id_produto),
+    )
 
-        conn.commit()
-        conn.close()
-    
+    conn.commit()
+    conn.close()
+
+
 def buscar_por_status(status):
 
     conn = conectar()
 
-    cursor = conn.execute("""
+    cursor = conn.execute(
+        """
         SELECT *
         FROM produtos
         WHERE status = ?
-    """, (status,))
+    """,
+        (status,),
+    )
 
     resultados = cursor.fetchall()
 
@@ -153,16 +167,20 @@ def buscar_por_status(status):
 
     return resultados
 
+
 def produto_existe(id_produto):
 
     conn = conectar()
 
-    cursor = conn.execute("""
+    cursor = conn.execute(
+        """
         SELECT 1
         FROM produtos
         WHERE id = ?
         LIMIT 1
-    """, (id_produto,))
+    """,
+        (id_produto,),
+    )
 
     existe = cursor.fetchone() is not None
 
@@ -170,18 +188,22 @@ def produto_existe(id_produto):
 
     return existe
 
+
 def adicionar_a_fila(product_id, queue):
 
     conn = conectar()
 
     try:
-        conn.execute("""
+        conn.execute(
+            """
             INSERT OR IGNORE INTO product_queue (
                 product_id,
                 queue
             )
             VALUES (?, ?)
-        """, (product_id, queue))
+        """,
+            (product_id, queue),
+        )
 
         conn.commit()
 
